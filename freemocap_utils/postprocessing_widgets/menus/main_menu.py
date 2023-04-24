@@ -13,13 +13,29 @@ from freemocap_utils.postprocessing_widgets.led_widgets import LedContainer
 from freemocap_utils.postprocessing_widgets.parameter_tree_builder import create_main_page_parameter_tree, create_main_page_settings_dict
 from freemocap_utils.postprocessing_widgets.stylesheet import groupbox_stylesheet, button_stylesheet
 
+from freemocap_utils.constants import (
+    TASK_INTERPOLATION,
+    TASK_FILTERING,
+    TASK_FINDING_GOOD_FRAME,
+    TASK_SKELETON_ROTATION,
+    TASK_RESULTS_VISUALIZATION,
+    TASK_DATA_SAVED,
+)
 
 class MainMenu(QWidget):
     
     save_skeleton_data_signal = pyqtSignal(object,object,object)
     def __init__(self,freemocap_raw_data:np.ndarray):
         super().__init__()
-        self.task_list = ['interpolation', 'filtering', 'finding good frame', 'skeleton rotation', 'results visualization', 'data saved']
+
+        self.task_list = [
+            TASK_INTERPOLATION,
+            TASK_FILTERING,
+            TASK_FINDING_GOOD_FRAME,
+            TASK_SKELETON_ROTATION,
+            TASK_RESULTS_VISUALIZATION,
+            TASK_DATA_SAVED,
+]
         layout = QVBoxLayout()
 
         self.setStyleSheet(groupbox_stylesheet)
@@ -147,10 +163,10 @@ class MainMenu(QWidget):
             return self.interpolated_skeleton
 
     def handle_plotting(self,task_results:dict):
-        good_frame = task_results['finding good frame']['result']
-        self.interpolated_skeleton = task_results['interpolation']['result']
-        self.filtered_skeleton = task_results['filtering']['result']
-        self.rotated_skeleton = task_results['skeleton rotation']['result']
+        good_frame = task_results[TASK_FINDING_GOOD_FRAME]['result']
+        self.interpolated_skeleton = task_results[TASK_INTERPOLATION]['result']
+        self.filtered_skeleton = task_results[TASK_FILTERING]['result']
+        self.rotated_skeleton = task_results[TASK_SKELETON_ROTATION]['result']
 
         if self.rotated_skeleton is not None:
             self.skeleton_viewers_container.plot_processed_skeleton(self.rotated_skeleton)
@@ -160,4 +176,4 @@ class MainMenu(QWidget):
         self.update_viewer_plots(good_frame)
         self.frame_count_slider.slider.setValue(good_frame)
 
-        self.handle_task_completed('results visualization', result = True)
+        self.handle_task_completed(TASK_RESULTS_VISUALIZATION, result = True)

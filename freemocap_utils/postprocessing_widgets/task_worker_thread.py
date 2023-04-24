@@ -7,10 +7,25 @@ from freemocap_utils.postprocessing_widgets.postprocessing_functions.rotate_skel
 
 from freemocap_utils.postprocessing_widgets.visualization_widgets.mediapipe_skeleton_builder import mediapipe_indices
 
-
 import numpy as np
 
 import threading
+
+from freemocap_utils.constants import (
+    TASK_INTERPOLATION,
+    TASK_FILTERING,
+    TASK_FINDING_GOOD_FRAME,
+    TASK_SKELETON_ROTATION,
+    TASK_RESULTS_VISUALIZATION,
+    TASK_DATA_SAVED,
+    PARAM_METHOD,
+    PARAM_ORDER,
+    PARAM_CUTOFF_FREQUENCY,
+    PARAM_SAMPLING_RATE,
+    PARAM_ROTATE_DATA,
+    PARAM_AUTO_FIND_GOOD_FRAME,
+    PARAM_GOOD_FRAME
+)
 
 class TaskWorkerThread(threading.Thread):
     def __init__(self, raw_skeleton_data:np.ndarray, task_list:list, settings:dict, task_running_callback=None, task_completed_callback=None, all_tasks_finished_callback=None):
@@ -18,12 +33,12 @@ class TaskWorkerThread(threading.Thread):
 
         self.raw_skeleton_data = raw_skeleton_data
         self.available_tasks = {
-            'interpolation': self.interpolate_task,
-            'filtering': self.filter_task,
-            'finding good frame': self.find_good_frame_task,
-            'skeleton rotation': self.rotate_skeleton_task,
-            'results visualization': None,
-            'data saved': None
+            TASK_INTERPOLATION: self.interpolate_task,
+            TASK_FILTERING: self.filter_task,
+            TASK_FINDING_GOOD_FRAME: self.find_good_frame_task,
+            TASK_SKELETON_ROTATION: self.rotate_skeleton_task,
+            TASK_RESULTS_VISUALIZATION: None,
+            TASK_DATA_SAVED: None
         }
         self.tasks = {task_name: {'function': self.available_tasks[task_name], 'result': None} for task_name in task_list}
 
@@ -60,26 +75,26 @@ class TaskWorkerThread(threading.Thread):
 
     def interpolate_task(self):
         interpolation_values_dict = self.settings['Interpolation']
-        interpolated_skeleton = interpolate_skeleton_data(self.raw_skeleton_data, method_to_use=interpolation_values_dict['Method'], order=interpolation_values_dict["Order"])
+        interpolated_skeleton = interpolate_skeleton_data(self.raw_skeleton_data, method_to_use=interpolation_values_dict[PARAM_METHOD], order=interpolation_values_dict[PARAM_ORDER])
         return True,interpolated_skeleton
 
     def filter_task(self):
         filter_values_dict = self.settings['Filtering']
-        filtered_skeleton = filter_skeleton_data(self.tasks['interpolation']['result'], order=filter_values_dict['Order'], cutoff=filter_values_dict['Cutoff Frequency'], sampling_rate=filter_values_dict['Sampling Rate'])
+        filtered_skeleton = filter_skeleton_data(self.tasks[TASK_INTERPOLATION]['result'], order=filter_values_dict[PARAM_ORDER], cutoff=filter_values_dict[PARAM_CUTOFF_FREQUENCY], sampling_rate=filter_values_dict[PARAM_SAMPLING_RATE])
         return True,filtered_skeleton
 
     def find_good_frame_task(self):
         good_frame_values_dict = self.settings['Rotation']
         
-        if good_frame_values_dict['Rotate Data']:
+        if good_frame_values_dict[PARAM_ROTATE_DATA]:
             #if auto find is selected
-            if good_frame_values_dict['Auto-find Good Frame']:
-                self.good_frame = find_good_frame(self.tasks['filtering']['result'], skeleton_indices=mediapipe_indices, initial_velocity_guess=.5)
+            if good_frame_values_dict[PARAM_AUTO_FIND_GOOD_FRAME]:
+                self.good_frame = find_good_frame(self.tasks[TASK_FILTERING]['result'], skeleton_indices=mediapipe_indices, initial_velocity_guess=.5)
                 rotation_params.auto_find_good_frame_param.setValue(False)
                 rotation_params.good_frame_param.setValue(str(self.good_frame))
             #if auto find is not, get the user entered good frame
             else:
-                self.good_frame = int(good_frame_values_dict['Good Frame'])
+                self.good_frame = int(good_frame_values_dict[PARAM_GOOD_FRAME])
             return True, self.good_frame
         else:
             #if no rotation is needed, we don't need to run the good frame finder
@@ -89,8 +104,8 @@ class TaskWorkerThread(threading.Thread):
 
     def rotate_skeleton_task(self):
         rotate_values_dict = self.settings['Rotation']
-        if rotate_values_dict['Rotate Data']:
-            origin_aligned_skeleton = align_skeleton_with_origin(self.tasks['filtering']['result'], mediapipe_indices, self.good_frame)[0]
+        if rotate_values_dict[PARAM_ROTATE_DATA]:
+            origin_aligned_skeleton = align_skeleton_with_origin(self.tasks[TASK_FILTERING]['result'], mediapipe_indices, self.good_frame)[0]
             return True, origin_aligned_skeleton
         else:
             origin_aligned_skeleton = None

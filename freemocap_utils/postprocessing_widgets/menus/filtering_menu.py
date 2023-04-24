@@ -10,6 +10,10 @@ from freemocap_utils.postprocessing_widgets.visualization_widgets.timeseries_vie
 from freemocap_utils.postprocessing_widgets.visualization_widgets.marker_selector_widget import MarkerSelectorWidget
 from freemocap_utils.postprocessing_widgets.stylesheet import groupbox_stylesheet
 
+from freemocap_utils.constants import (
+    TASK_INTERPOLATION,
+    TASK_FILTERING,
+)
 
 class FilteringMenu(QWidget):
     def __init__(self, freemocap_raw_data:np.ndarray):
@@ -65,13 +69,14 @@ class FilteringMenu(QWidget):
         self.settings_dict = create_filter_page_settings_dict()
         self.worker_thread = TaskWorkerThread(
             raw_skeleton_data=self.freemocap_raw_data,
-            task_list= ['interpolation', 'filtering'],
+            task_list= [TASK_INTERPOLATION, 
+                        TASK_FILTERING],
             settings=self.settings_dict,
             all_tasks_finished_callback=self.handle_filter_result)        
         self.worker_thread.start()
 
 
     def handle_filter_result(self, task_results: dict):
-        self.processed_freemocap_data = task_results['filtering']['result']
+        self.processed_freemocap_data = task_results[TASK_FILTERING]['result']
         self.update_timeseries_plot(reset_axes=False)
        
