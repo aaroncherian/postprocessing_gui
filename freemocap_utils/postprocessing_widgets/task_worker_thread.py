@@ -37,8 +37,6 @@ class TaskWorkerThread(threading.Thread):
             TASK_FILTERING: self.filter_task,
             TASK_FINDING_GOOD_FRAME: self.find_good_frame_task,
             TASK_SKELETON_ROTATION: self.rotate_skeleton_task,
-            TASK_RESULTS_VISUALIZATION: None,
-            TASK_DATA_SAVED: None
         }
         self.tasks = {task_name: {'function': self.available_tasks[task_name], 'result': None} for task_name in task_list}
 

@@ -28,13 +28,20 @@ class MainMenu(QWidget):
     def __init__(self,freemocap_raw_data:np.ndarray):
         super().__init__()
 
-        self.task_list = [
+        self.led_names = [
             TASK_INTERPOLATION,
             TASK_FILTERING,
             TASK_FINDING_GOOD_FRAME,
             TASK_SKELETON_ROTATION,
             TASK_RESULTS_VISUALIZATION,
             TASK_DATA_SAVED,
+        ]
+
+        self.task_list = [
+            TASK_INTERPOLATION,
+            TASK_FILTERING,
+            TASK_FINDING_GOOD_FRAME,
+            TASK_SKELETON_ROTATION,
 ]
         layout = QVBoxLayout()
 
@@ -62,7 +69,7 @@ class MainMenu(QWidget):
 
     def create_led_groupbox(self):
         groupbox = QGroupBox('Processing Progress')
-        self.led_container = LedContainer(self.task_list)
+        self.led_container = LedContainer(self.led_names)
         self.progress_led_dict, led_layout = self.led_container.create_led_indicators()
         groupbox.setLayout(led_layout)
         return groupbox
