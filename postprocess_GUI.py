@@ -12,18 +12,19 @@ class FileManager:
     def __init__(self, path_to_recording: str):
         self.path_to_recording = path_to_recording
         #self.data_array_path = self.path_to_recording/'DataArrays'
-        self.data_array_path = self.path_to_recording/'output_data'/'raw_data'
-    
+        self.output_data_array_path = self.path_to_recording/'output_data'
+        self.raw_data_array_path = self.output_data_array_path/'raw_data'
+
     def load_skeleton_data(self):
         # freemocap_raw_data = np.load(self.data_array_path/'mediaPipeSkel_3d.npy')
-        freemocap_raw_data = np.load(self.data_array_path/'mediapipe3dData_numFrames_numTrackedPoints_spatialXYZ.npy')
+        freemocap_raw_data = np.load(self.raw_data_array_path/'mediapipe3dData_numFrames_numTrackedPoints_spatialXYZ.npy')
         freemocap_raw_data = freemocap_raw_data[:,0:33,:]
         return freemocap_raw_data
 
     def save_skeleton_data(self, skeleton_data:np.ndarray, skeleton_file_name:str, settings_dict:dict):
-        np.save(self.data_array_path/skeleton_file_name,skeleton_data)
+        np.save(self.output_data_array_path/skeleton_file_name,skeleton_data)
 
-        output_toml_name = self.data_array_path/'postprocessing_settings.toml'
+        output_toml_name = self.output_data_array_path/'postprocessing_settings.toml'
         toml_string = toml.dumps(settings_dict)
 
         with open(output_toml_name, 'w') as toml_file:

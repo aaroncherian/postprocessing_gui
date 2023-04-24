@@ -85,7 +85,7 @@ class MainMenu(QWidget):
         save_layout.addWidget(save_label)
         self.save_entry = QLineEdit()
         self.save_entry.setMaximumWidth(600)
-        self.save_entry.setText('mediapipe_body_3d_xyz')
+        self.save_entry.setText('mediapipe_postprocessed_3d_xyz')
         save_layout.addWidget(self.save_entry)
 
         self.save_button = QPushButton('Save out data')
