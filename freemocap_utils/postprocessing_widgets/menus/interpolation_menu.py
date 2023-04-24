@@ -9,6 +9,11 @@ from freemocap_utils.postprocessing_widgets.visualization_widgets.timeseries_vie
 from freemocap_utils.postprocessing_widgets.visualization_widgets.marker_selector_widget import MarkerSelectorWidget
 from freemocap_utils.postprocessing_widgets.stylesheet import groupbox_stylesheet
 
+from freemocap_utils.constants import (
+    TASK_INTERPOLATION,
+)
+
+
 class InterpolationMenu(QWidget):
     def __init__(self, freemocap_raw_data:np.ndarray):
         super().__init__()
@@ -63,11 +68,11 @@ class InterpolationMenu(QWidget):
         self.settings_dict = create_interpolation_page_settings_dict()
         self.worker_thread = TaskWorkerThread(
             raw_skeleton_data=self.freemocap_raw_data,
-            task_list= ['interpolation'],
+            task_list= [TASK_INTERPOLATION],
             settings=self.settings_dict,
             all_tasks_finished_callback=self.handle_interpolation_result)        
         self.worker_thread.start()   
 
     def handle_interpolation_result(self, task_results: dict):
-        self.processed_freemocap_data = task_results['interpolation']['result']
+        self.processed_freemocap_data = task_results[TASK_INTERPOLATION]['result']
         self.update_timeseries_plot(reset_axes=False)
