@@ -151,7 +151,7 @@ class MainMenu(QWidget):
         final_skeleton = self.get_final_processed_skeleton()
         skeleton_save_file_name = self.save_entry.text()
         self.save_skeleton_data_signal.emit(final_skeleton,skeleton_save_file_name,self.settings_dict)
-        self.handle_task_completed('data saved', result = True)
+        self.handle_task_completed(TASK_DATA_SAVED, result = True)
 
 
     def get_final_processed_skeleton(self):
