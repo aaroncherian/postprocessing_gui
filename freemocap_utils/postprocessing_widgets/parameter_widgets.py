@@ -26,8 +26,14 @@ filter_settings = [
     ]}
 ]
 
-interpolation_params = Parameter.create(name='interp_params', type='group', children=interpolation_settings)
-filter_params = Parameter.create(name='filter_params',type='group', children=filter_settings )
+rotation_settings = [
+    {"name": "Rotation", "type": "group", "children": [
+        {"name": "Rotate Data", "type": "bool", "value": True},
+        {"name": "Instructions", "type": "str", "value": "Uncheck 'Auto-find Good Frame' to type in the good frame manually.", "readonly": True},
+        {"name": "Auto-find Good Frame", "type": "bool", "value": True},
+        {"name": "Good Frame", "type": "str", "value": "", "step": 1},
+    ]}
+]
 
 class CustomRotationParam(Parameter):
     def __init__(self, *args, **kwargs):
@@ -54,14 +60,8 @@ class CustomRotationParam(Parameter):
             self.good_frame_param.setOpts(readonly=False)
 
 
-rotation_settings = [
-    {"name": "Rotation", "type": "group", "children": [
-        {"name": "Rotate Data", "type": "bool", "value": True},
-        {"name": "Instructions", "type": "str", "value": "Uncheck 'Auto-find Good Frame' to type in the good frame manually.", "readonly": True},
-        {"name": "Auto-find Good Frame", "type": "bool", "value": True},
-        {"name": "Good Frame", "type": "str", "value": "", "step": 1},
-    ]}
-]
+interpolation_params = Parameter.create(name='interp_params', type='group', children=interpolation_settings)
+filter_params = Parameter.create(name='filter_params',type='group', children=filter_settings )
 
 registerParameterType('CustomRotationParam',CustomRotationParam)
 rotation_params = Parameter.create(name='rotation_params', type='CustomRotationParam', children=rotation_settings) #the 'type' here refers to the parameter type we made the line above
