@@ -95,7 +95,6 @@ class TaskWorkerThread(threading.Thread):
             self.good_frame = 0
             return False, self.good_frame
 
-
     def rotate_skeleton_task(self):
         rotate_values_dict = self.settings['Rotation']
         if rotate_values_dict[PARAM_ROTATE_DATA]:
@@ -105,13 +104,3 @@ class TaskWorkerThread(threading.Thread):
             origin_aligned_skeleton = None
             return False, origin_aligned_skeleton
 
-
-    def get_all_parameter_values(self,parameter_object):
-        values = {}
-        for child in parameter_object.children(): #using this just to access the second level of the parameter tree
-            if child.hasChildren():
-                for grandchild in child.children():
-                    values[grandchild.name()] = grandchild.value()
-            else:
-                values[child.name()] = child.value()
-        return values
