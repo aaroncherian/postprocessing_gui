@@ -1,6 +1,6 @@
 
 from pyqtgraph.parametertree import ParameterTree
-
+from freemocap_utils.constants import TASK_INTERPOLATION, TASK_FILTERING, TASK_SKELETON_ROTATION
 from freemocap_utils.postprocessing_widgets.parameter_widgets import interpolation_params, filter_params, rotation_params
 
 #name mapping is used if the name of the key in the GUI parameter doesn't match what it needs to be in the settings dict
@@ -35,9 +35,9 @@ def create_main_page_settings_dict():
     rotation_dict = parameter_tree_to_dict(rotation_params)
 
     settings_dict = {
-        'Interpolation': interpolation_dict,
-        'Filtering': filter_dict,
-        'Rotation': rotation_dict
+        TASK_INTERPOLATION: interpolation_dict,
+        TASK_FILTERING: filter_dict,
+        TASK_SKELETON_ROTATION: rotation_dict
     }
     return settings_dict
 
@@ -51,7 +51,7 @@ def create_interpolation_page_settings_dict():
     interpolation_dict = parameter_tree_to_dict(interpolation_params, interpolation_name_mapping)
 
     settings_dict = {
-        'Interpolation': interpolation_dict,
+        TASK_INTERPOLATION: interpolation_dict,
     }
     return settings_dict
 
@@ -66,8 +66,8 @@ def create_filter_page_settings_dict():
     filter_dict = parameter_tree_to_dict(filter_params)
 
     settings_dict = {
-        'Interpolation': interpolation_dict,
-        'Filtering': filter_dict,
+        TASK_INTERPOLATION: interpolation_dict,
+        TASK_FILTERING: filter_dict,
     }
     return settings_dict
 

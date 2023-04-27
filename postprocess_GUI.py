@@ -94,7 +94,7 @@ if __name__ == "__main__":
     # freemocap_raw_data = freemocap_raw_data[:,0:33,:]
 
 
-    path_to_data_folder = Path(r'D:\footropter_pilot_04_19_23\1.0_recordings\recordings_calib_2\sesh_2023-04-19_16_10_34_treadmill_JSM')
+    path_to_data_folder = Path(r"D:\footropter_pilot_04_19_23\1.0_recordings\recordings_calib_3\sesh_2023-04-19_16_33_40_ML_fun")
 
     app = QApplication([])
     win = MainWindow(path_to_data_folder)

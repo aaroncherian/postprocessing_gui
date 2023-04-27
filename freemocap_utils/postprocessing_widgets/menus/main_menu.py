@@ -31,6 +31,7 @@ class MainMenu(QWidget):
         super().__init__()
 
         self.led_names = [
+            #list of the task names that are used to label the leds (and activate them based on task callbacks)
             TASK_INTERPOLATION,
             TASK_FILTERING,
             TASK_FINDING_GOOD_FRAME,
@@ -40,11 +41,12 @@ class MainMenu(QWidget):
         ]
 
         self.task_list = [
+            #a list of the tasks controlled by the main menu page
             TASK_INTERPOLATION,
             TASK_FILTERING,
             TASK_FINDING_GOOD_FRAME,
             TASK_SKELETON_ROTATION,
-]
+        ]
         layout = QVBoxLayout()
 
         self.setStyleSheet(groupbox_stylesheet)
@@ -57,8 +59,6 @@ class MainMenu(QWidget):
         parameter_groupbox = self.create_parameter_groupbox()
         layout.addWidget(parameter_groupbox)
 
-        self.connect_signals_to_slots()
-
         self.skeleton_viewers_container.plot_raw_skeleton(self.freemocap_raw_data)
 
         led_groupbox = self.create_led_groupbox()
@@ -67,7 +67,13 @@ class MainMenu(QWidget):
         save_groupbox = self.create_save_widgets()
         layout.addWidget(save_groupbox)
 
+        self.connect_signals_to_slots()
+
         self.setLayout(layout)
+
+        
+    def connect_signals_to_slots(self):
+        self.frame_count_slider.slider.valueChanged.connect(lambda: self.update_viewer_plots(self.frame_count_slider.slider.value()))
 
     def create_led_groupbox(self):
         groupbox = QGroupBox('Processing Progress')
@@ -95,7 +101,6 @@ class MainMenu(QWidget):
         return groupbox
 
     def create_save_widgets(self):
-
         groupbox = QGroupBox('Process and save out data')
         process_and_save_layout = QVBoxLayout()
 
@@ -124,9 +129,6 @@ class MainMenu(QWidget):
         groupbox.setLayout(process_and_save_layout)
         return groupbox
 
-    def connect_signals_to_slots(self):
-        self.frame_count_slider.slider.valueChanged.connect(lambda: self.update_viewer_plots(self.frame_count_slider.slider.value()))
-        
     def update_viewer_plots(self, frame_to_plot):
         self.skeleton_viewers_container.update_raw_viewer_plot(frame_to_plot)
         self.skeleton_viewers_container.update_processed_viewer_plot(frame_to_plot)
@@ -159,7 +161,7 @@ class MainMenu(QWidget):
             self.handle_good_frame_task_completed(result)
 
     def handle_good_frame_task_completed(self,result):
-        good_frame_values_dict = self.settings_dict['Rotation']
+        good_frame_values_dict = self.settings_dict[TASK_SKELETON_ROTATION]
 
         if good_frame_values_dict[PARAM_ROTATE_DATA]: #if the 'rotate data' checkbox was checked
             #if auto find a good frame was selected, update the 'good frame' in the GUI with the frame that was found (and set frame finding to False)

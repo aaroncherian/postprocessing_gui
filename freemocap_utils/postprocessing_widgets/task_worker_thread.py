@@ -71,22 +71,22 @@ class TaskWorkerThread(threading.Thread):
             else:
                 if self.task_completed_callback is not None:
                     self.task_completed_callback(task_name, None)
-        
+
         if self.all_tasks_finished_callback is not None:
             self.all_tasks_finished_callback(self.tasks)
 
     def interpolate_task(self):
-        interpolation_values_dict = self.settings['Interpolation']
+        interpolation_values_dict = self.settings[TASK_INTERPOLATION]
         interpolated_skeleton = interpolate_skeleton_data(self.raw_skeleton_data, method_to_use=interpolation_values_dict[PARAM_METHOD], order=interpolation_values_dict[PARAM_ORDER])
         return True,interpolated_skeleton
 
     def filter_task(self):
-        filter_values_dict = self.settings['Filtering']
+        filter_values_dict = self.settings[TASK_FILTERING]
         filtered_skeleton = filter_skeleton_data(self.tasks[TASK_INTERPOLATION]['result'], order=filter_values_dict[PARAM_ORDER], cutoff=filter_values_dict[PARAM_CUTOFF_FREQUENCY], sampling_rate=filter_values_dict[PARAM_SAMPLING_RATE])
         return True,filtered_skeleton
 
     def find_good_frame_task(self):
-        good_frame_values_dict = self.settings['Rotation']
+        good_frame_values_dict = self.settings[TASK_SKELETON_ROTATION]
         
         if good_frame_values_dict[PARAM_ROTATE_DATA]:
             #if auto find is selected, find the good frame - if it is not, use the user entered value
@@ -101,7 +101,7 @@ class TaskWorkerThread(threading.Thread):
             return False, self.good_frame
 
     def rotate_skeleton_task(self):
-        rotate_values_dict = self.settings['Rotation']
+        rotate_values_dict = self.settings[TASK_SKELETON_ROTATION]
         if rotate_values_dict[PARAM_ROTATE_DATA]:
             origin_aligned_skeleton = align_skeleton_with_origin(self.tasks[TASK_FILTERING]['result'], mediapipe_indices, self.good_frame)[0]
             return True, origin_aligned_skeleton
