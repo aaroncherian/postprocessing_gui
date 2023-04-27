@@ -1,11 +1,11 @@
 
 from pyqtgraph.parametertree import ParameterTree
-from freemocap_utils.constants import TASK_INTERPOLATION, TASK_FILTERING, TASK_SKELETON_ROTATION
+from freemocap_utils.constants import TASK_INTERPOLATION, TASK_FILTERING, TASK_SKELETON_ROTATION, PARAM_ORDER
 from freemocap_utils.postprocessing_widgets.parameter_widgets import interpolation_params, filter_params, rotation_params
 
 #name mapping is used if the name of the key in the GUI parameter doesn't match what it needs to be in the settings dict
 interpolation_name_mapping = {
-    "Order (only used in spline interpolation)": "Order"
+    "Order (only used in spline interpolation)": PARAM_ORDER
 }
 
 def parameter_tree_to_dict(parameter_object, name_mapping=None):
