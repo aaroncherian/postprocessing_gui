@@ -1,5 +1,4 @@
 
-from freemocap_utils.postprocessing_widgets.parameter_widgets import rotation_params
 from freemocap_utils.postprocessing_widgets.postprocessing_functions.interpolate_data import interpolate_skeleton_data
 from freemocap_utils.postprocessing_widgets.postprocessing_functions.filter_data import filter_skeleton_data
 from freemocap_utils.postprocessing_widgets.postprocessing_functions.good_frame_finder import find_good_frame
@@ -85,12 +84,9 @@ class TaskWorkerThread(threading.Thread):
         good_frame_values_dict = self.settings['Rotation']
         
         if good_frame_values_dict[PARAM_ROTATE_DATA]:
-            #if auto find is selected
+            #if auto find is selected, find the good frame - if it is not, use the user entered value
             if good_frame_values_dict[PARAM_AUTO_FIND_GOOD_FRAME]:
                 self.good_frame = find_good_frame(self.tasks[TASK_FILTERING]['result'], skeleton_indices=mediapipe_indices, initial_velocity_guess=.5)
-                rotation_params.auto_find_good_frame_param.setValue(False)
-                rotation_params.good_frame_param.setValue(str(self.good_frame))
-            #if auto find is not, get the user entered good frame
             else:
                 self.good_frame = int(good_frame_values_dict[PARAM_GOOD_FRAME])
             return True, self.good_frame

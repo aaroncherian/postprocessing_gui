@@ -10,7 +10,7 @@ from freemocap_utils.postprocessing_widgets.visualization_widgets.slider_widget 
 from freemocap_utils.postprocessing_widgets.task_worker_thread import TaskWorkerThread
 from freemocap_utils.postprocessing_widgets.visualization_widgets.skeleton_viewers_container import SkeletonViewersContainer
 from freemocap_utils.postprocessing_widgets.led_widgets import LedContainer
-from freemocap_utils.postprocessing_widgets.parameter_tree_builder import create_main_page_parameter_tree, create_main_page_settings_dict
+from freemocap_utils.postprocessing_widgets.parameter_tree_builder import create_main_page_parameter_tree, create_main_page_settings_dict, rotation_params
 from freemocap_utils.postprocessing_widgets.stylesheet import groupbox_stylesheet, button_stylesheet
 
 from freemocap_utils.constants import (
@@ -20,6 +20,8 @@ from freemocap_utils.constants import (
     TASK_SKELETON_ROTATION,
     TASK_RESULTS_VISUALIZATION,
     TASK_DATA_SAVED,
+    PARAM_AUTO_FIND_GOOD_FRAME,
+    PARAM_ROTATE_DATA
 )
 
 class MainMenu(QWidget):
@@ -153,8 +155,19 @@ class MainMenu(QWidget):
         else:
             self.led_container.change_led_to_task_is_finished_color(task)
 
+        if task == TASK_FINDING_GOOD_FRAME:
+            self.handle_good_frame_task_completed(result)
+
+    def handle_good_frame_task_completed(self,result):
+        good_frame_values_dict = self.settings_dict['Rotation']
+
+        if good_frame_values_dict[PARAM_ROTATE_DATA]: #if the 'rotate data' checkbox was checked
+            #if auto find a good frame was selected, update the 'good frame' in the GUI with the frame that was found (and set frame finding to False)
+            if good_frame_values_dict[PARAM_AUTO_FIND_GOOD_FRAME]:
+                rotation_params.auto_find_good_frame_param.setValue(False)
+                rotation_params.good_frame_param.setValue(str(result))
+
     def save_skeleton_data(self):
-        # file_path_to_save = 
         final_skeleton = self.get_final_processed_skeleton()
         skeleton_save_file_name = self.save_entry.text()
         self.save_skeleton_data_signal.emit(final_skeleton,skeleton_save_file_name,self.settings_dict)
