@@ -54,20 +54,24 @@ class TaskWorkerThread(threading.Thread):
             task_info['result'] = None
 
         for task_name, task_info in self.tasks.items():
-  
+
             if self.task_running_callback is not None:
                 self.task_running_callback(task_name)
             
-            is_completed, result = task_info['function']()
+            #run the function for each task and return a bool of if it is completed, and a result object
+            is_completed, result = task_info['function']() 
             
             task_info['result'] = result
+
+            #depending on if callback functions have been passed, return the result of the function, or None
+            #if the task was not completed
             if is_completed:
                 if self.task_completed_callback is not None:
                     self.task_completed_callback(task_name, result)
             else:
                 if self.task_completed_callback is not None:
                     self.task_completed_callback(task_name, None)
-
+        
         if self.all_tasks_finished_callback is not None:
             self.all_tasks_finished_callback(self.tasks)
 
