@@ -1,46 +1,50 @@
 from pyqtgraph.parametertree import Parameter,registerParameterType
+from freemocap_utils.constants import(
+    TASK_INTERPOLATION,
+    TASK_FILTERING,
+    TASK_FINDING_GOOD_FRAME,
+    TASK_SKELETON_ROTATION,
+    PARAM_METHOD,
+    PARAM_ORDER,
+    PARAM_CUTOFF_FREQUENCY,
+    PARAM_SAMPLING_RATE,
+    PARAM_ROTATE_DATA,
+    PARAM_AUTO_FIND_GOOD_FRAME,
+    PARAM_GOOD_FRAME
+)
 
 
 interpolation_settings = [
-    {"name": "Interpolation", "type": "group", "children": [
-        {
-        "name": "Method", 
-         "type": "list", 
-         "values": ["linear", "cubic", "spline"]
-         },
-        {
-        "name": "Order (only used in spline interpolation)", 
-         "type": "int", 
-         "value":3, 
-         "step":1
-         }
+    {"name": TASK_INTERPOLATION.title(), "type": "group", "children": [
+        {"name": PARAM_METHOD, "type": "list", "values": ["linear", "cubic", "spline"]},
+        {"name": "Order (only used in spline interpolation)", "type": "int", "value":3, "step":1}
     ]}
 ]
 
 filter_settings = [
-        {"name": "Filtering", "type": "group", "children": [
+        {"name": TASK_FILTERING.title(), "type": "group", "children": [
         {"name": "Filter Type", "type": "list", "values": ["Butterworth Low Pass"]},
-        {"name": "Order", "type":"int","value":4, "step":.1},
-        {"name": "Cutoff Frequency", "type": "float", "value": 6.0, "step": 0.1},
-        {"name": "Sampling Rate", "type": "float", "value": 30.0, "step": 0.1},
+        {"name": PARAM_ORDER, "type":"int","value":4, "step":.1},
+        {"name": PARAM_CUTOFF_FREQUENCY, "type": "float", "value": 6.0, "step": 0.1},
+        {"name": PARAM_SAMPLING_RATE, "type": "float", "value": 30.0, "step": 0.1},
     ]}
 ]
 
 rotation_settings = [
-    {"name": "Rotation", "type": "group", "children": [
-        {"name": "Rotate Data", "type": "bool", "value": True},
+    {"name": TASK_SKELETON_ROTATION.title(), "type": "group", "children": [
+        {"name": PARAM_ROTATE_DATA, "type": "bool", "value": True},
         {"name": "Instructions", "type": "str", "value": "Uncheck 'Auto-find Good Frame' to type in the good frame manually.", "readonly": True},
-        {"name": "Auto-find Good Frame", "type": "bool", "value": True},
-        {"name": "Good Frame", "type": "str", "value": "", "step": 1},
+        {"name": PARAM_AUTO_FIND_GOOD_FRAME, "type": "bool", "value": True},
+        {"name": PARAM_GOOD_FRAME, "type": "str", "value": "", "step": 1},
     ]}
 ]
 
 class CustomRotationParam(Parameter):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.rotate_data_param = self.child("Rotation").child("Rotate Data")
-        self.auto_find_good_frame_param = self.child("Rotation").child('Auto-find Good Frame')
-        self.good_frame_param = self.child("Rotation").child("Good Frame")
+        self.rotate_data_param = self.child(TASK_SKELETON_ROTATION.title()).child(PARAM_ROTATE_DATA)
+        self.auto_find_good_frame_param = self.child(TASK_SKELETON_ROTATION.title()).child(PARAM_AUTO_FIND_GOOD_FRAME)
+        self.good_frame_param = self.child(TASK_SKELETON_ROTATION.title()).child(PARAM_GOOD_FRAME)
 
         self.rotate_data_param.sigValueChanged.connect(self.rotate_data_changed)
         self.auto_find_good_frame_param.sigValueChanged.connect(self.auto_find_good_frame_changed)
