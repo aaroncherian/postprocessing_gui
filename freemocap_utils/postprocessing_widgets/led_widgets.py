@@ -1,4 +1,4 @@
-from PyQt6.QtCore import Qt, QPoint, QPointF, QRect
+from PyQt6.QtCore import Qt, QPointF, QRect
 from PyQt6.QtGui import QPainter, QColor, QBrush, QLinearGradient, QPen
 from PyQt6.QtWidgets import QWidget, QHBoxLayout, QLabel
 from freemocap_utils.postprocessing_widgets.stylesheet import label_stylesheet
@@ -40,14 +40,16 @@ class LEDIndicator(QWidget):
         # Paint the LED circle with the gradient
         painter.setBrush(QBrush(gradient))
         painter.setPen(Qt.PenStyle.NoPen)
-        painter.drawEllipse(self.rect().center(), diameter / 2, diameter / 2)
+        painter.drawEllipse(QPointF(self.rect().center()), diameter / 2, diameter / 2)
+
 
         # Add a subtle border to the LED circle
         border_color = self.color.lighter(150)
         border_rect = QRect(0, 0, diameter, diameter)
         painter.setBrush(Qt.BrushStyle.NoBrush)
         painter.setPen(QPen(border_color, 1))
-        painter.drawEllipse(border_rect.center(), diameter / 2, diameter / 2)
+        painter.drawEllipse(QPointF(self.rect().center()), diameter / 2, diameter / 2)
+
 
 
 class LedContainer(QWidget):
