@@ -2,9 +2,9 @@ from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtWidgets import QWidget,QFileDialog,QPushButton,QVBoxLayout
 
 import matplotlib
-matplotlib.use('Qt5Agg')
+matplotlib.use('QtAgg')
 
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
+from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 
 from pathlib import Path

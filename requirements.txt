@@ -4,5 +4,5 @@ pyqtgraph
 scipy
 rich
 pandas
-matplotlib
+matplotlib==3.6.3
 toml
