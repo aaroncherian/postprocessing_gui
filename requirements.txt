@@ -1,0 +1,8 @@
+numpy
+pyqt6
+pyqtgraph
+scipy
+rich
+pandas
+matplotlib
+toml
