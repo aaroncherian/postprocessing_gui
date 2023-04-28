@@ -2,9 +2,9 @@
 from PyQt6.QtWidgets import QWidget,QVBoxLayout
 
 import matplotlib
-matplotlib.use('Qt5Agg')
+matplotlib.use('QtAgg')
 
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT as NavigationToolbar
+from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg, NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 
 from freemocap_utils.postprocessing_widgets.visualization_widgets.mediapipe_skeleton_builder import mediapipe_indices

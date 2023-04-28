@@ -1,13 +1,11 @@
 from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtWidgets import QWidget,QFileDialog,QPushButton,QVBoxLayout
+from PyQt6.QtWidgets import QWidget,QVBoxLayout
 
 import matplotlib
 matplotlib.use('QtAgg')
-
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 
-from pathlib import Path
 import numpy as np
 
 from freemocap_utils.postprocessing_widgets.visualization_widgets.mediapipe_skeleton_builder import mediapipe_indices,mediapipe_connections,build_skeleton

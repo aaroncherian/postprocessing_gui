@@ -1,8 +1,5 @@
 from rich.progress import track
 from pathlib import Path
-import numpy as np
-
-
 
 mediapipe_indices = ['nose',
     'left_eye_inner',
