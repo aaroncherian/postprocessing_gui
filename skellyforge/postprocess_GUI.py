@@ -18,7 +18,7 @@ class FileManager:
     def load_skeleton_data(self):
         # freemocap_raw_data = np.load(self.data_array_path/'mediaPipeSkel_3d.npy')
         freemocap_raw_data = np.load(self.raw_data_array_path/'mediapipe3dData_numFrames_numTrackedPoints_spatialXYZ.npy')
-        freemocap_raw_data = freemocap_raw_data[:,0:33,:]
+        freemocap_raw_data = freemocap_raw_data[:,:,:]
         return freemocap_raw_data
 
     def save_skeleton_data(self, skeleton_data:np.ndarray, skeleton_file_name:str, settings_dict:dict):
@@ -79,13 +79,21 @@ class MainWindow(QMainWindow):
 
         widget.setLayout(layout)
         self.setCentralWidget(widget)
+        
 
-
-if __name__ == "__main__":
-    
-    path_to_data_folder = Path(r"D:\footropter_pilot_04_19_23\1.0_recordings\recordings_calib_3\sesh_2023-04-19_16_33_40_ML_fun")
+def main(path_to_data_folder=None):
+    if not path_to_data_folder:
+        path_to_data_folder = Path(input("Enter path to data folder (no quotations around the path): "))
+        
 
     app = QApplication([])
     win = MainWindow(path_to_data_folder)
     win.show()
     app.exec()
+
+
+
+if __name__ == "__main__":
+
+    main(Path(r"D:\2023-05-17_MDN_NIH_data\1.0_recordings\calib_3\sesh_2023-05-17_14_53_48_MDN_NIH_Trial3"))        
+
