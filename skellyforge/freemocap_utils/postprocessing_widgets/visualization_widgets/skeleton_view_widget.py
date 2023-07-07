@@ -74,7 +74,7 @@ class SkeletonViewWidget(QWidget):
             self.ax.set_zlim([self.mz_skel-self.skel_3d_range, self.mz_skel+self.skel_3d_range])
         
         self.ax.set_title(self.plot_title)
-        self.fig.figure.canvas.draw_idle()
+        self.fig.figure.canvas.draw()
 
     def plot_skeleton_bones(self,frame_number):
             this_frame_skeleton_data = self.mediapipe_skeleton[frame_number]
