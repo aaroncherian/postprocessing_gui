@@ -32,7 +32,7 @@ dependencies = [
 "scipy",
 "rich",
 "pandas",
-"matplotlib==3.6.3",
+"matplotlib,
 "toml",
 ] #add additional dependencies here - try to pin versions as minimally as possible
 
