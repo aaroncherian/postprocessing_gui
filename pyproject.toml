@@ -32,7 +32,7 @@ dependencies = [
 "scipy",
 "rich",
 "pandas",
-"matplotlib,
+"matplotlib",
 "toml",
 ] #add additional dependencies here - try to pin versions as minimally as possible
 

@@ -3,8 +3,7 @@
 # INSTALLING the GUI
  1. Create a 3.9 or 3.10 conda environment environment 
    -have tested this successfully on 3.9.16 (latest 3.9 version) and 3.10.11 (latest 3.10 version)
- 2. Navigate to this github repo and use the command `pip install -r requirements.txt` to install the dependencies
-   -Note: I pinned the matplotlib version at 3.6.3 for now because 3.7.0 and above were causing some errors to pop up with the 3D plot
+ 2. Navigate to this github repo and use the command `pip install -e.` to install the dependencies from the pyproject.toml
 
 # STARTING the GUI:
  1. Open up `postprocess_GUI.py`
