@@ -172,3 +172,14 @@ def align_skeleton_with_origin(skeleton_data:np.ndarray, skeleton_indices:list, 
     spine_aligned_skeleton_data = rotate_skeleton_to_vector(y_aligned_spine_vector,z_vector,y_aligned_skeleton_data)
 
     return spine_aligned_skeleton_data, y_aligned_skeleton_data, foot_translated_skeleton_data
+
+
+def rotate_by_90_degrees_around_x_axis(raw_skel3d_frame_marker_xyz: np.ndarray) -> np.ndarray:
+
+    swapped_skel3d_frame_marker_xyz = np.zeros(raw_skel3d_frame_marker_xyz.shape)
+
+    swapped_skel3d_frame_marker_xyz[:, :, 0] = raw_skel3d_frame_marker_xyz[:, :, 0]
+    swapped_skel3d_frame_marker_xyz[:, :, 1] = raw_skel3d_frame_marker_xyz[:, :, 2]
+    swapped_skel3d_frame_marker_xyz[:, :, 2] = -raw_skel3d_frame_marker_xyz[:, :, 1]
+
+    return swapped_skel3d_frame_marker_xyz
