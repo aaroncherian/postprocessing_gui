@@ -1,5 +1,4 @@
 
-
 import numpy as np
 
 from PyQt6.QtWidgets import QWidget,QVBoxLayout, QPushButton,QGroupBox, QHBoxLayout, QLineEdit, QLabel
@@ -21,7 +20,7 @@ from freemocap_utils.constants import (
     TASK_RESULTS_VISUALIZATION,
     TASK_DATA_SAVED,
     PARAM_AUTO_FIND_GOOD_FRAME,
-    PARAM_ROTATE_DATA
+    PARAM_ROTATE_DATA,
 )
 
 class MainMenu(QWidget):

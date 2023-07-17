@@ -2,7 +2,7 @@
 from freemocap_utils.postprocessing_widgets.postprocessing_functions.interpolate_data import interpolate_skeleton_data
 from freemocap_utils.postprocessing_widgets.postprocessing_functions.filter_data import filter_skeleton_data
 from freemocap_utils.postprocessing_widgets.postprocessing_functions.good_frame_finder import find_good_frame
-from freemocap_utils.postprocessing_widgets.postprocessing_functions.rotate_skeleton import align_skeleton_with_origin
+from freemocap_utils.postprocessing_widgets.postprocessing_functions.rotate_skeleton import align_skeleton_with_origin, rotate_by_90_degrees_around_x_axis
 
 from freemocap_utils.postprocessing_widgets.visualization_widgets.mediapipe_skeleton_builder import mediapipe_indices
 
@@ -21,7 +21,9 @@ from freemocap_utils.constants import (
     PARAM_SAMPLING_RATE,
     PARAM_ROTATE_DATA,
     PARAM_AUTO_FIND_GOOD_FRAME,
-    PARAM_GOOD_FRAME
+    PARAM_GOOD_FRAME,
+    ROTATE_METHOD_FOOT_SPINE,
+    ROTATE_METHOD_X
 )
 
 class TaskWorkerThread(threading.Thread):
@@ -88,7 +90,7 @@ class TaskWorkerThread(threading.Thread):
     def find_good_frame_task(self):
         good_frame_values_dict = self.settings[TASK_SKELETON_ROTATION]
         
-        if good_frame_values_dict[PARAM_ROTATE_DATA]:
+        if good_frame_values_dict[PARAM_ROTATE_DATA] == ROTATE_METHOD_FOOT_SPINE:
             #if auto find is selected, find the good frame - if it is not, use the user entered value
             if good_frame_values_dict[PARAM_AUTO_FIND_GOOD_FRAME]:
                 self.good_frame = find_good_frame(self.tasks[TASK_FILTERING]['result'], skeleton_indices=mediapipe_indices, initial_velocity_guess=.5)
@@ -102,8 +104,11 @@ class TaskWorkerThread(threading.Thread):
 
     def rotate_skeleton_task(self):
         rotate_values_dict = self.settings[TASK_SKELETON_ROTATION]
-        if rotate_values_dict[PARAM_ROTATE_DATA]:
+        if rotate_values_dict[PARAM_ROTATE_DATA] == ROTATE_METHOD_FOOT_SPINE:
             origin_aligned_skeleton = align_skeleton_with_origin(self.tasks[TASK_FILTERING]['result'], mediapipe_indices, self.good_frame)[0]
+            return True, origin_aligned_skeleton
+        elif rotate_values_dict[PARAM_ROTATE_DATA] == ROTATE_METHOD_X:
+            origin_aligned_skeleton = rotate_by_90_degrees_around_x_axis(self.tasks[TASK_FILTERING]['result'])
             return True, origin_aligned_skeleton
         else:
             origin_aligned_skeleton = None

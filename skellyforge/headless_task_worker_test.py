@@ -4,7 +4,7 @@ from freemocap_utils.config import default_settings
 
 
 def handle_task_completed(task_name, result):
-    print(f"Task {task_name} completed. Result:")
+    print(f"Task {task_name} completed. Result: ")
     # print(result)
 
 freemocap_raw_data = np.load(r'D:\ValidationStudy2022\FreeMocap_Data\sesh_2022-05-24_16_10_46_JSM_T1_WalkRun\DataArrays\mediaPipeSkel_3d.npy')
