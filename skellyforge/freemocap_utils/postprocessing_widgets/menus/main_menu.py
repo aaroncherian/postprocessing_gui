@@ -166,8 +166,8 @@ class MainMenu(QWidget):
         if good_frame_values_dict[PARAM_ROTATE_DATA]: #if the 'rotate data' checkbox was checked
             #if auto find a good frame was selected, update the 'good frame' in the GUI with the frame that was found (and set frame finding to False)
             if good_frame_values_dict[PARAM_AUTO_FIND_GOOD_FRAME]:
-                rotation_params.auto_find_good_frame_param.setValue(False)
-                rotation_params.good_frame_param.setValue(str(result))
+                rotation_params.foot_spine_rotation.auto_find_good_frame_param.setValue(False)
+                rotation_params.foot_spine_rotation.good_frame_param.setValue(str(result))
 
     def save_skeleton_data(self):
         final_skeleton = self.get_final_processed_skeleton()

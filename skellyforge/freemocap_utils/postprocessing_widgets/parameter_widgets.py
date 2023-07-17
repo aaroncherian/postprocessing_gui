@@ -32,36 +32,58 @@ filter_settings = [
 
 rotation_settings = [
     {"name": TASK_SKELETON_ROTATION.title(), "type": "group", "children": [
-        {"name": PARAM_ROTATE_DATA, "type": "bool", "value": True},
+        {"name": PARAM_ROTATE_DATA, "type": "list", "values": ["None", "Rotate around x", "Foot/Spine Rotation"], "value": "None"},
         {"name": "Instructions", "type": "str", "value": "Uncheck 'Auto-find Good Frame' to type in the good frame manually.", "readonly": True},
         {"name": PARAM_AUTO_FIND_GOOD_FRAME, "type": "bool", "value": True},
         {"name": PARAM_GOOD_FRAME, "type": "str", "value": "", "step": 1},
     ]}
 ]
 
-class CustomRotationParam(Parameter):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.rotate_data_param = self.child(TASK_SKELETON_ROTATION.title()).child(PARAM_ROTATE_DATA)
-        self.auto_find_good_frame_param = self.child(TASK_SKELETON_ROTATION.title()).child(PARAM_AUTO_FIND_GOOD_FRAME)
-        self.good_frame_param = self.child(TASK_SKELETON_ROTATION.title()).child(PARAM_GOOD_FRAME)
-
-        self.rotate_data_param.sigValueChanged.connect(self.rotate_data_changed)
+class FootSpineRotationParam:
+    def __init__(self, auto_find_good_frame_param, good_frame_param):
+        self.auto_find_good_frame_param = auto_find_good_frame_param
+        self.good_frame_param = good_frame_param
         self.auto_find_good_frame_param.sigValueChanged.connect(self.auto_find_good_frame_changed)
 
-    def rotate_data_changed(self, value):
-        enabled = value.value()
-        self.auto_find_good_frame_param.setOpts(enabled=enabled)
-        self.good_frame_param.setOpts(enabled=enabled)
+    def enable(self):
+        self.auto_find_good_frame_param.setOpts(enabled=True)
+        # Make sure to disable the good_frame_param when enabling this group.
+        self.good_frame_param.setOpts(enabled=False)
+        # As per your description, auto_find_good_frame_param should be True by default.
+        self.auto_find_good_frame_param.setValue(True)
+
+    def disable(self):
+        self.auto_find_good_frame_param.setOpts(enabled=False)
+        self.good_frame_param.setOpts(enabled=False)
 
     def auto_find_good_frame_changed(self, value):
         if value.value():
             self.good_frame_param.setValue("")
-            self.good_frame_param.setOpts(readonly=True)
+            self.good_frame_param.setOpts(enabled=False, readonly=True)
         else:
             if not self.good_frame_param.value():
                 self.good_frame_param.setValue("0")
-            self.good_frame_param.setOpts(readonly=False)
+            self.good_frame_param.setOpts(enabled=True, readonly=False)
+
+
+class CustomRotationParam(Parameter):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.rotate_data_param = self.child(TASK_SKELETON_ROTATION.title()).child(PARAM_ROTATE_DATA)
+        auto_find_good_frame_param = self.child(TASK_SKELETON_ROTATION.title()).child(PARAM_AUTO_FIND_GOOD_FRAME)
+        good_frame_param = self.child(TASK_SKELETON_ROTATION.title()).child(PARAM_GOOD_FRAME)
+        self.foot_spine_rotation = FootSpineRotationParam(auto_find_good_frame_param, good_frame_param)
+        self.rotate_data_param.sigValueChanged.connect(self.rotate_data_changed)
+
+    def rotate_data_changed(self, value):
+        rotation_mode = value.value()
+        if rotation_mode == "Foot/Spine Rotation":
+            self.foot_spine_rotation.enable()
+        else:
+            self.foot_spine_rotation.disable()
+
+
+
 
 
 interpolation_params = Parameter.create(name='interp_params', type='group', children=interpolation_settings)
