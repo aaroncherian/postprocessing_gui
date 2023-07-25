@@ -9,7 +9,7 @@ PARAM_METHOD = "Method"
 PARAM_ORDER = "Order"
 PARAM_CUTOFF_FREQUENCY = "Cutoff Frequency"
 PARAM_SAMPLING_RATE = "Sampling Rate"
-PARAM_ROTATE_DATA = "Rotate Data"
+PARAM_ROTATE_DATA = "Data Rotation Method"
 PARAM_AUTO_FIND_GOOD_FRAME = "Auto-find Good Frame"
 PARAM_GOOD_FRAME = "Good Frame"
 
