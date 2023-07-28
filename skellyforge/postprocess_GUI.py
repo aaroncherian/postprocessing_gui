@@ -17,8 +17,9 @@ class FileManager:
 
     def load_skeleton_data(self):
         # freemocap_raw_data = np.load(self.data_array_path/'mediaPipeSkel_3d.npy')
-        freemocap_raw_data = np.load(self.raw_data_array_path/'mediapipe3dData_numFrames_numTrackedPoints_spatialXYZ.npy')
-        freemocap_raw_data = freemocap_raw_data[:,:,:]
+        freemocap_raw_data = np.load(self.raw_data_array_path/'freemocap_spliced.npy')
+        # freemocap_raw_data = np.load(self.raw_data_array_path/'mediapipe3dData_numFrames_numTrackedPoints_spatialXYZ.npy')
+        freemocap_raw_data = freemocap_raw_data[:,0:33,:]
         return freemocap_raw_data
 
     def save_skeleton_data(self, skeleton_data:np.ndarray, skeleton_file_name:str, settings_dict:dict):
@@ -95,5 +96,5 @@ def main(path_to_data_folder=None):
 
 if __name__ == "__main__":
 
-    main(Path(r"D:\2023-05-17_MDN_NIH_data\1.0_recordings\calib_3\sesh_2023-05-17_14_53_48_MDN_NIH_Trial3"))        
+    main(Path(r"D:\2023-06-07_JH\1.0_recordings\treadmill_calib\sesh_2023-06-07_12_06_15_JH_flexion_neutral_trial_1"))        
 
