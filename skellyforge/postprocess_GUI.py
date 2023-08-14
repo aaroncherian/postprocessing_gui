@@ -19,7 +19,7 @@ class FileManager:
         # freemocap_raw_data = np.load(self.data_array_path/'mediaPipeSkel_3d.npy')
         freemocap_raw_data = np.load(self.raw_data_array_path/'freemocap_spliced.npy')
         # freemocap_raw_data = np.load(self.raw_data_array_path/'mediapipe3dData_numFrames_numTrackedPoints_spatialXYZ.npy')
-        freemocap_raw_data = freemocap_raw_data[:,0:33,:]
+        freemocap_raw_data = freemocap_raw_data[:,:,:]
         return freemocap_raw_data
 
     def save_skeleton_data(self, skeleton_data:np.ndarray, skeleton_file_name:str, settings_dict:dict):
