@@ -65,12 +65,8 @@ class TaskWorkerThread(threading.Thread):
 
             #depending on if callback functions have been passed, return the result of the function, or None
             #if the task was not completed
-            if is_completed:
-                if self.task_completed_callback is not None:
-                    self.task_completed_callback(task_name, result)
-            else:
-                if self.task_completed_callback is not None:
-                    self.task_completed_callback(task_name, None)
+            if self.task_completed_callback:
+                self.task_completed_callback(task_name, result if is_completed else None)
 
         if self.all_tasks_finished_callback is not None:
             self.all_tasks_finished_callback(self.tasks)
