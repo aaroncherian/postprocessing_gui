@@ -1,6 +1,6 @@
-from freemocap_utils.postprocessing_widgets.task_worker_thread import TaskWorkerThread
+from skellyforge.freemocap_utils.postprocessing_widgets.task_worker_thread import TaskWorkerThread
 import numpy as np
-from freemocap_utils.config import default_settings
+from skellyforge.freemocap_utils.config import default_settings
 
 
 def handle_task_completed(task_name, result):

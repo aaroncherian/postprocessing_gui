@@ -4,13 +4,13 @@ import numpy as np
 from PyQt6.QtWidgets import QWidget,QVBoxLayout, QPushButton, QGroupBox
 
 
-from freemocap_utils.postprocessing_widgets.task_worker_thread import TaskWorkerThread
-from freemocap_utils.postprocessing_widgets.parameter_tree_builder import create_filter_parameter_tree, create_filter_page_settings_dict
-from freemocap_utils.postprocessing_widgets.visualization_widgets.timeseries_view_widget import TimeSeriesPlotterWidget
-from freemocap_utils.postprocessing_widgets.visualization_widgets.marker_selector_widget import MarkerSelectorWidget
-from freemocap_utils.postprocessing_widgets.stylesheet import groupbox_stylesheet
+from skellyforge.freemocap_utils.postprocessing_widgets.task_worker_thread import TaskWorkerThread
+from skellyforge.freemocap_utils.postprocessing_widgets.parameter_tree_builder import create_filter_parameter_tree, create_filter_page_settings_dict
+from skellyforge.freemocap_utils.postprocessing_widgets.visualization_widgets.timeseries_view_widget import TimeSeriesPlotterWidget
+from skellyforge.freemocap_utils.postprocessing_widgets.visualization_widgets.marker_selector_widget import MarkerSelectorWidget
+from skellyforge.freemocap_utils.postprocessing_widgets.stylesheet import groupbox_stylesheet
 
-from freemocap_utils.constants import (
+from skellyforge.freemocap_utils.constants import (
     TASK_INTERPOLATION,
     TASK_FILTERING,
 )

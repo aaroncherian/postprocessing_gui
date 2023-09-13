@@ -1,5 +1,5 @@
 
-from freemocap_utils.postprocessing_widgets.visualization_widgets.mediapipe_skeleton_builder import mediapipe_indices
+from skellyforge.freemocap_utils.postprocessing_widgets.visualization_widgets.mediapipe_skeleton_builder import mediapipe_indices
 
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QComboBox
 from PyQt6.QtCore import pyqtSignal
