@@ -6,14 +6,14 @@ from PyQt6.QtWidgets import QWidget,QVBoxLayout, QPushButton,QGroupBox, QHBoxLay
 
 from PyQt6.QtCore import pyqtSignal
 
-from freemocap_utils.postprocessing_widgets.visualization_widgets.slider_widget import FrameCountSlider
-from freemocap_utils.postprocessing_widgets.task_worker_thread import TaskWorkerThread
-from freemocap_utils.postprocessing_widgets.visualization_widgets.skeleton_viewers_container import SkeletonViewersContainer
-from freemocap_utils.postprocessing_widgets.led_widgets import LedContainer
-from freemocap_utils.postprocessing_widgets.parameter_tree_builder import create_main_page_parameter_tree, create_main_page_settings_dict, rotation_params
-from freemocap_utils.postprocessing_widgets.stylesheet import groupbox_stylesheet, button_stylesheet
+from skellyforge.freemocap_utils.postprocessing_widgets.visualization_widgets.slider_widget import FrameCountSlider
+from skellyforge.freemocap_utils.postprocessing_widgets.task_worker_thread import TaskWorkerThread
+from skellyforge.freemocap_utils.postprocessing_widgets.visualization_widgets.skeleton_viewers_container import SkeletonViewersContainer
+from skellyforge.freemocap_utils.postprocessing_widgets.led_widgets import LedContainer
+from skellyforge.freemocap_utils.postprocessing_widgets.parameter_tree_builder import create_main_page_parameter_tree, create_main_page_settings_dict, rotation_params
+from skellyforge.freemocap_utils.postprocessing_widgets.stylesheet import groupbox_stylesheet, button_stylesheet
 
-from freemocap_utils.constants import (
+from skellyforge.freemocap_utils.constants import (
     TASK_INTERPOLATION,
     TASK_FILTERING,
     TASK_FINDING_GOOD_FRAME,

@@ -3,9 +3,9 @@ import numpy as np
 
 from PyQt6.QtWidgets import QMainWindow, QApplication, QTabWidget, QWidget, QVBoxLayout
 
-from freemocap_utils.postprocessing_widgets.menus.main_menu import MainMenu
-from freemocap_utils.postprocessing_widgets.menus.interpolation_menu import InterpolationMenu
-from freemocap_utils.postprocessing_widgets.menus.filtering_menu import FilteringMenu
+from skellyforge.freemocap_utils.postprocessing_widgets.menus.main_menu import MainMenu
+from skellyforge.freemocap_utils.postprocessing_widgets.menus.interpolation_menu import InterpolationMenu
+from skellyforge.freemocap_utils.postprocessing_widgets.menus.filtering_menu import FilteringMenu
 import toml
 
 class FileManager:

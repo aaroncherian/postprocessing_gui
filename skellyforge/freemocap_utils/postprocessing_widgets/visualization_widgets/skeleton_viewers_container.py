@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QWidget, QHBoxLayout
-from freemocap_utils.postprocessing_widgets.visualization_widgets.skeleton_view_widget import SkeletonViewWidget
+from skellyforge.freemocap_utils.postprocessing_widgets.visualization_widgets.skeleton_view_widget import SkeletonViewWidget
 
 
 class SkeletonViewersContainer(QWidget):
