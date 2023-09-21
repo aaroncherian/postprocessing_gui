@@ -1,4 +1,4 @@
-from freemocap_utils.constants import(
+from skellyforge.freemocap_utils.constants import(
     TASK_INTERPOLATION,
     TASK_FILTERING,
     TASK_FINDING_GOOD_FRAME,

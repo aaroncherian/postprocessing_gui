@@ -8,7 +8,7 @@ from matplotlib.figure import Figure
 
 import numpy as np
 
-from freemocap_utils.postprocessing_widgets.visualization_widgets.mediapipe_skeleton_builder import mediapipe_indices,mediapipe_connections,build_skeleton
+from skellyforge.freemocap_utils.postprocessing_widgets.visualization_widgets.mediapipe_skeleton_builder import mediapipe_indices,mediapipe_connections,build_skeleton
 
 
 class SkeletonViewWidget(QWidget):
