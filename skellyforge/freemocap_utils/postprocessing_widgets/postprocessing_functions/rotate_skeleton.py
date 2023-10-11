@@ -74,6 +74,12 @@ def calculate_rotation_matrix(vector1,vector2):
 
     return rotation_matrix
 
+def create_rotation_matrix_from_rotation_vector(rotation_vector: np.ndarray) -> np.ndarray:
+    """Take in a rotation vector and return a rotation matrix"""
+    origin_normal_unit_vector = create_vector(np.array([0, 0, 0]), np.array([0, 0, 1]))
+    unit_rotation_vector = calculate_unit_vector(rotation_vector)
+    return calculate_rotation_matrix(unit_rotation_vector, origin_normal_unit_vector)
+
 def rotate_point(point,rotation_matrix):
     rotated_point = np.dot(rotation_matrix,point)
     return rotated_point
@@ -114,8 +120,24 @@ def rotate_skeleton_to_vector(reference_vector:np.ndarray, vector_to_rotate_to:n
     return rotated_skeleton_data_array
 
 
+def rotate_skeleton_with_matrix(rotation_matrix: np.ndarray, original_skeleton_np_array: np.ndarray) -> np.ndarray:
+    """
+    Rotate the entire skeleton with given rotation matrix.
 
+        Input:
+            Rotation matrix: Rotation matrix describing the desired rotation
+            Original skeleton data: The freemocap data you want to rotate
+        Output:
+            rotated_skeleton_data: A numpy data array of your rotated skeleton
 
+    """
+    rotated_skeleton_data_array = np.zeros(original_skeleton_np_array.shape)
+    for frame in range(original_skeleton_np_array.shape[0]):
+        rotated_skeleton_data_array[frame, :, :] = rotate_skeleton_frame(
+            original_skeleton_np_array[frame, :, :], rotation_matrix
+        )
+
+    return rotated_skeleton_data_array
 
 
 def align_skeleton_with_origin(skeleton_data:np.ndarray, skeleton_indices:list, good_frame:int) -> np.ndarray:
