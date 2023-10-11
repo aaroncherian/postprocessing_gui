@@ -5,7 +5,7 @@ import threading
 from freemocap_utils.postprocessing_widgets.postprocessing_functions.interpolate_data import interpolate_skeleton_data
 from freemocap_utils.postprocessing_widgets.postprocessing_functions.filter_data import filter_skeleton_data
 from freemocap_utils.postprocessing_widgets.postprocessing_functions.good_frame_finder import find_good_frame
-from freemocap_utils.postprocessing_widgets.postprocessing_functions.rotate_skeleton import align_skeleton_with_origin, rotate_by_90_degrees_around_x_axis
+from freemocap_utils.postprocessing_widgets.postprocessing_functions.rotate_skeleton import align_skeleton_with_origin, create_rotation_matrix_from_rotation_vector, create_vector, rotate_by_90_degrees_around_x_axis, rotate_skeleton_to_vector, rotate_skeleton_with_matrix
 
 from freemocap_utils.postprocessing_widgets.visualization_widgets.mediapipe_skeleton_builder import mediapipe_indices
 
@@ -39,7 +39,8 @@ from freemocap_utils.constants import (
     PARAM_AUTO_FIND_GOOD_FRAME,
     PARAM_GOOD_FRAME,
     ROTATE_METHOD_FOOT_SPINE,
-    ROTATE_METHOD_X
+    ROTATE_METHOD_X,
+    ROTATE_METHOD_VECTOR,
 )
 
 
@@ -134,6 +135,13 @@ class TaskWorkerThread(threading.Thread):
         elif rotate_values_dict[PARAM_ROTATE_DATA] == ROTATE_METHOD_X:
             origin_aligned_skeleton = rotate_by_90_degrees_around_x_axis(self.tasks[TASK_FILTERING]['result'])
             return True, origin_aligned_skeleton
+        elif rotate_values_dict[PARAM_ROTATE_DATA] == ROTATE_METHOD_VECTOR:
+            origin_normal_unit_vector = create_vector(np.array([0, 0, 0]), np.array([0, 0, 1]))
+            origin_aligned_skeleton = rotate_skeleton_to_vector(
+                reference_vector=[], # figure out how to pass parameters to this
+                vector_to_rotate_to=origin_normal_unit_vector,
+                original_skeleton_np_array=self.tasks[TASK_FILTERING]['result']
+            )
         else:
             origin_aligned_skeleton = None
             return False, origin_aligned_skeleton

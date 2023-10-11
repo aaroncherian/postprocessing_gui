@@ -15,4 +15,5 @@ PARAM_GOOD_FRAME = "Good Frame"
 
 ROTATE_METHOD_FOOT_SPINE = 'Foot/Spine Rotation'
 ROTATE_METHOD_X = 'Rotate around X'
+ROTATE_METHOD_VECTOR = 'Rotate According to Vector'
 ROTATE_METHOD_NONE = 'None'

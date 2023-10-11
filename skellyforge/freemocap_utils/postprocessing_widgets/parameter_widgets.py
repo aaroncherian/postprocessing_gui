@@ -13,6 +13,7 @@ from skellyforge.freemocap_utils.constants import(
     PARAM_GOOD_FRAME,
     ROTATE_METHOD_FOOT_SPINE,
     ROTATE_METHOD_X,
+    ROTATE_METHOD_VECTOR,
     ROTATE_METHOD_NONE
 )
 
@@ -35,7 +36,7 @@ filter_settings = [
 
 rotation_settings = [
     {"name": TASK_SKELETON_ROTATION.title(), "type": "group", "children": [
-        {"name": PARAM_ROTATE_DATA, "type": "list", "values": [ROTATE_METHOD_NONE, ROTATE_METHOD_X, ROTATE_METHOD_FOOT_SPINE], "value": "None"},
+        {"name": PARAM_ROTATE_DATA, "type": "list", "values": [ROTATE_METHOD_NONE, ROTATE_METHOD_X, ROTATE_METHOD_FOOT_SPINE, ROTATE_METHOD_VECTOR], "value": "None"},
         {"name": "Instructions", "type": "str", "value": "Uncheck 'Auto-find Good Frame' to type in the good frame manually.", "readonly": True},
         {"name": PARAM_AUTO_FIND_GOOD_FRAME, "type": "bool", "value": True},
         {"name": PARAM_GOOD_FRAME, "type": "str", "value": "", "step": 1},
