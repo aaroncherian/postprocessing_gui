@@ -1,5 +1,7 @@
+import numpy as np
 from pyqtgraph.parametertree import Parameter,registerParameterType
 from skellyforge.freemocap_utils.constants import(
+    PARAM_GROUNDPLANE_VECTOR,
     TASK_INTERPOLATION,
     TASK_FILTERING,
     TASK_FINDING_GOOD_FRAME,
@@ -13,6 +15,7 @@ from skellyforge.freemocap_utils.constants import(
     PARAM_GOOD_FRAME,
     ROTATE_METHOD_FOOT_SPINE,
     ROTATE_METHOD_X,
+    ROTATE_METHOD_GROUNDPLANE_VECTOR,
     ROTATE_METHOD_NONE
 )
 
@@ -35,10 +38,11 @@ filter_settings = [
 
 rotation_settings = [
     {"name": TASK_SKELETON_ROTATION.title(), "type": "group", "children": [
-        {"name": PARAM_ROTATE_DATA, "type": "list", "values": [ROTATE_METHOD_NONE, ROTATE_METHOD_X, ROTATE_METHOD_FOOT_SPINE], "value": "None"},
+        {"name": PARAM_ROTATE_DATA, "type": "list", "values": [ROTATE_METHOD_NONE, ROTATE_METHOD_X, ROTATE_METHOD_FOOT_SPINE, ROTATE_METHOD_GROUNDPLANE_VECTOR], "value": "None"},
         {"name": "Instructions", "type": "str", "value": "Uncheck 'Auto-find Good Frame' to type in the good frame manually.", "readonly": True},
         {"name": PARAM_AUTO_FIND_GOOD_FRAME, "type": "bool", "value": True},
         {"name": PARAM_GOOD_FRAME, "type": "str", "value": "", "step": 1},
+        {"name": PARAM_GROUNDPLANE_VECTOR, "type": "str", "value": ""},
     ]}
 ]
 
@@ -70,12 +74,24 @@ class FootSpineRotationParam:
                 self.good_frame_param.setValue("0")
             self.good_frame_param.setOpts(enabled=True, readonly=False)
 
+class GroundplaneVectorRotationParam:
+    def __init__(self, parent):
+        self.parent = parent
+        self.groundplane_vector_param = self.parent.child(TASK_SKELETON_ROTATION.title()).child(PARAM_GROUNDPLANE_VECTOR)
+
+    def enable(self):
+        self.groundplane_vector_param.setOpts(visible=True)
+
+    def disable(self):
+        self.groundplane_vector_param.setOpts(visible=False)
+
 
 class CustomRotationParam(Parameter):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.rotate_data_param = self.child(TASK_SKELETON_ROTATION.title()).child(PARAM_ROTATE_DATA)
         self.foot_spine_rotation = FootSpineRotationParam(self)
+        self.groundplane_vector_rotation = GroundplaneVectorRotationParam(self)
         self.rotate_data_param.sigValueChanged.connect(self.rotate_data_changed)
         # Initial setup
         self.rotate_data_changed(self.rotate_data_param)
@@ -84,11 +100,17 @@ class CustomRotationParam(Parameter):
         rotation_mode = value.value()
         if rotation_mode == ROTATE_METHOD_FOOT_SPINE:
             self.foot_spine_rotation.enable()
+            self.groundplane_vector_rotation.disable()
+        elif rotation_mode == ROTATE_METHOD_GROUNDPLANE_VECTOR:
+            self.groundplane_vector_rotation.enable()
+            self.foot_spine_rotation.disable()
         else:
             self.foot_spine_rotation.disable()
+            self.groundplane_vector_rotation.disable()
 
 
-
+def get_array_from_str_parameter(param: str) -> np.ndarray:
+    return np.asarray([float(x) for x in param.split(",")])
 
 
 interpolation_params = Parameter.create(name='interp_params', type='group', children=interpolation_settings)

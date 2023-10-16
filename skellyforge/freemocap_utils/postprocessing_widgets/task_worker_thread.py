@@ -5,7 +5,7 @@ import threading
 from freemocap_utils.postprocessing_widgets.postprocessing_functions.interpolate_data import interpolate_skeleton_data
 from freemocap_utils.postprocessing_widgets.postprocessing_functions.filter_data import filter_skeleton_data
 from freemocap_utils.postprocessing_widgets.postprocessing_functions.good_frame_finder import find_good_frame
-from freemocap_utils.postprocessing_widgets.postprocessing_functions.rotate_skeleton import align_skeleton_with_origin, rotate_by_90_degrees_around_x_axis
+from freemocap_utils.postprocessing_widgets.postprocessing_functions.rotate_skeleton import align_skeleton_with_origin, create_vector, rotate_by_90_degrees_around_x_axis, rotate_skeleton_to_vector
 
 from freemocap_utils.postprocessing_widgets.visualization_widgets.mediapipe_skeleton_builder import mediapipe_indices
 
@@ -15,6 +15,7 @@ import numpy as np
 from skellyforge.freemocap_utils.constants import TASK_INTERPOLATION, TASK_FINDING_GOOD_FRAME, TASK_FILTERING, \
     TASK_SKELETON_ROTATION, PARAM_ROTATE_DATA, PARAM_AUTO_FIND_GOOD_FRAME, PARAM_GOOD_FRAME, PARAM_SAMPLING_RATE, \
     PARAM_CUTOFF_FREQUENCY, PARAM_ORDER, PARAM_METHOD
+from skellyforge.freemocap_utils.postprocessing_widgets.parameter_widgets import get_array_from_str_parameter
 from skellyforge.freemocap_utils.postprocessing_widgets.postprocessing_functions.filter_data import filter_skeleton_data
 from skellyforge.freemocap_utils.postprocessing_widgets.postprocessing_functions.good_frame_finder import \
     find_good_frame
@@ -27,6 +28,7 @@ from skellyforge.freemocap_utils.postprocessing_widgets.visualization_widgets.me
 
 
 from freemocap_utils.constants import (
+    PARAM_GROUNDPLANE_VECTOR,
     TASK_INTERPOLATION,
     TASK_FILTERING,
     TASK_FINDING_GOOD_FRAME,
@@ -39,7 +41,8 @@ from freemocap_utils.constants import (
     PARAM_AUTO_FIND_GOOD_FRAME,
     PARAM_GOOD_FRAME,
     ROTATE_METHOD_FOOT_SPINE,
-    ROTATE_METHOD_X
+    ROTATE_METHOD_X,
+    ROTATE_METHOD_GROUNDPLANE_VECTOR,
 )
 
 
@@ -133,6 +136,15 @@ class TaskWorkerThread(threading.Thread):
             return True, origin_aligned_skeleton
         elif rotate_values_dict[PARAM_ROTATE_DATA] == ROTATE_METHOD_X:
             origin_aligned_skeleton = rotate_by_90_degrees_around_x_axis(self.tasks[TASK_FILTERING]['result'])
+            return True, origin_aligned_skeleton
+        elif rotate_values_dict[PARAM_ROTATE_DATA] == ROTATE_METHOD_GROUNDPLANE_VECTOR:
+            origin_normal_unit_vector = create_vector(np.array([0, 0, 0]), np.array([0, 0, 1]))
+            reference_vector = get_array_from_str_parameter(self.settings[TASK_SKELETON_ROTATION][PARAM_GROUNDPLANE_VECTOR])
+            origin_aligned_skeleton = rotate_skeleton_to_vector(
+                reference_vector=reference_vector,
+                vector_to_rotate_to=origin_normal_unit_vector,
+                original_skeleton_np_array=self.tasks[TASK_FILTERING]['result']
+            )
             return True, origin_aligned_skeleton
         else:
             origin_aligned_skeleton = None

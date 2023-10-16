@@ -114,10 +114,6 @@ def rotate_skeleton_to_vector(reference_vector:np.ndarray, vector_to_rotate_to:n
     return rotated_skeleton_data_array
 
 
-
-
-
-
 def align_skeleton_with_origin(skeleton_data:np.ndarray, skeleton_indices:list, good_frame:int) -> np.ndarray:
 
     """
